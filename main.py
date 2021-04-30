@@ -1,16 +1,24 @@
-# This is a sample Python script.
+import PySimpleGUI as sg
+import pandas as pd
+import threading
 
-# Press Maiusc+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+from application import layouts, explorer
 
+sg.set_options(auto_size_buttons=True)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+window = sg.Window('Table', layout=layouts.main_layout(), grab_anywhere=False)
 
+while True:  # Main update loop
+    event, values = window.read()
+    if event == sg.WINDOW_CLOSED:
+        # TODO: add close warning (if not saved?)
+        break
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    tb: sg.Table = window["-A-"]
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    if event == "-SEARCH-":
+        filter_word = window["-SEARCHINPUT-"].get()
+        filtered_data = explorer.TABLE.data[explorer.TABLE.data['nome'].str.contains(filter_word, na=False)]
+        tb.update(filtered_data.values.tolist())
+
+window.close()
