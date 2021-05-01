@@ -2,11 +2,15 @@ import PySimpleGUI as sg
 import pandas as pd
 import threading
 
-from application import layouts, explorer
+from application import ui, explorer, callbacks
 
 sg.set_options(auto_size_buttons=True)
 
-window = sg.Window('Table', layout=layouts.main_layout(), grab_anywhere=False)
+# Preliminary steps
+callbacks.load_settings()
+
+window_title = f"Database in uso: {sg.user_settings()['excel_file']}"
+window = sg.Window(window_title, layout=ui.main_layout(), grab_anywhere=False)
 
 while True:  # Main update loop
     event, values = window.read()

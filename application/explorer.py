@@ -1,4 +1,5 @@
 import pandas as pd
+import PySimpleGUI as sg
 
 
 class InteractiveData:
@@ -32,4 +33,5 @@ class InteractiveData:
 
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
-TABLE = InteractiveData("D:\\test-data.xlsx")
+excel_file = sg.user_settings()["excel_file"]
+TABLE = InteractiveData(excel_file)
