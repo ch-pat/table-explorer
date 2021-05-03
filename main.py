@@ -3,8 +3,10 @@ import pandas as pd
 import threading
 
 from application import ui, explorer, callbacks
+from application.strings import Strings, Keys
 
 sg.set_options(auto_size_buttons=True)
+sg.theme("Default")
 
 # Preliminary steps
 callbacks.load_settings()
@@ -18,11 +20,15 @@ while True:  # Main update loop
         # TODO: add close warning (if not saved?)
         break
 
-    tb: sg.Table = window["-A-"]
+    tb: sg.Table = window[Keys.MAINTABLE]
 
-    if event == "-SEARCH-":
-        filter_word = window["-SEARCHINPUT-"].get()
+    if event == Keys.SEARCH:
+        # TODO: rework filtering into a class function and make use of view
+        filter_word = window[Keys.SEARCHINPUT].get()
         filtered_data = explorer.TABLE.data[explorer.TABLE.data['nome'].str.contains(filter_word, na=False)]
         tb.update(filtered_data.values.tolist())
+
+    print(event)
+    print(tb.SelectedRows)
 
 window.close()

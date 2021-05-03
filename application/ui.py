@@ -35,11 +35,14 @@ def main_layout() -> list:
         [sg.Input(key=Keys.SEARCHINPUT), sg.Button(Strings.SEARCH, key=Keys.SEARCH)],
         [sg.Table(values=explorer.TABLE.view,
                   headings=headers,
+                  # Allows for only one item to be selected at a time and causes an event on single click
+                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                   display_row_numbers=False,
-                  auto_size_columns=False,
+                  auto_size_columns=True,
+                  justification="left",
                   num_rows=min(25, len(explorer.TABLE.view)),
                   enable_events=True,
-                  key="-A-")]
+                  key=Keys.MAINTABLE)]
     ]
     return layout
 
