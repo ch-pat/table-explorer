@@ -11,7 +11,6 @@ from application import explorer
 # ---- LAYOUTS ---- #
 
 def main_layout() -> list:
-    # TODO: either keep hard-coded (for the specific person) or grab from the above file
 
     table_and_search = [
         [sg.Menu(menu_layout())],
@@ -57,10 +56,10 @@ def menu_layout() -> list:
 Windows are supposed to be 'smaller' than layouts and be self-contained. 
 They usually directly return values necessary to other functions, while layouts are meant to be re-usable.
 """
+excel_filetypes = (("File Excel", "*.xlsx"), ("File Excel old", "*.xls"), ("File CSV", "*.csv"))
 
 
 def edit_settings_window() -> (str, str):
-    excel_filetypes = (("File Excel", "*.xlsx"), ("File Excel old", "*.xls"), ("File CSV", "*.csv"))
     layout = [
         [sg.Input(key="a", readonly=True), sg.FolderBrowse(Strings.CHOOSE_FOLDER_SUBJECTS, key=Keys.SUBJECTSFOLDER)],
         [sg.Input(key="b", readonly=True), sg.FileBrowse(Strings.CHOOSE_EXCEL_FILE, file_types=excel_filetypes, key=Keys.EXCELFILE)],
@@ -149,6 +148,46 @@ def edit_subjects_folder_window():
                     window.close()
                     del window
                     return subj_folder
+                else:
+                    sg.popup(Strings.CONFIG_NOT_EXISTS)
+
+    window.close()
+    del window
+
+
+def edit_excel_file_window():
+    """
+    Asks for a new location excel file
+    Return the specified file or None
+    """
+
+    layout = [
+        [sg.Text(f"Il file Excel in uso come database è: {sg.user_settings()['excel_file']}\n\n"
+                 f"Se si desidera modificare il file Excel di riferimento selezionarlo e confermare, "
+                 f"altrimenti annullare.")],
+        [sg.Input(readonly=True), sg.FileBrowse(Strings.CHOOSE_EXCEL_FILE, file_types=excel_filetypes,
+                                                key=Keys.EXCELFILE)],
+        [sg.Text(Strings.FILL_TEXT, visible=False, key=Keys.FILLCONFIGTEXT)],
+        [sg.Button(Strings.CANCEL), sg.Button(Strings.CONFIRM)]
+    ]
+
+    window = sg.Window("Modifica file Excel", layout)
+
+    while True:
+        event, values = window.read()
+
+        if event in (sg.WINDOW_CLOSED, Strings.CANCEL):
+            break
+
+        if event == Strings.CONFIRM:
+            excel_file = values[Keys.EXCELFILE]
+            if not excel_file:
+                window[Keys.FILLCONFIGTEXT].update(visible=True)
+            else:
+                if os.path.isfile(excel_file):
+                    window.close()
+                    del window
+                    return excel_file
                 else:
                     sg.popup(Strings.CONFIG_NOT_EXISTS)
 

@@ -2,7 +2,7 @@ import time
 
 import PySimpleGUI as sg
 from application import ui
-from application.strings import Strings
+from application.strings import Strings, Keys
 from application import explorer
 import os
 
@@ -94,6 +94,24 @@ def menu_change_subjects_folder():
     if new_folder:
         sg.user_settings_set_entry("subjects_folder", new_folder)
 
+
+def menu_change_excel_file(window: sg.Window) -> sg.Window:
+    """
+    Changes the excel file used for the displayed table
+    needs to update the table element and returns it to give back control to main
+    """
+    new_excel_file = ui.edit_excel_file_window()
+    if new_excel_file:
+        sg.user_settings_set_entry("excel_file", new_excel_file)
+        # Update window elements
+        explorer.TABLE = explorer.InteractiveData(new_excel_file)
+        new_window_title = f"Database in uso: {sg.user_settings()['excel_file']}"
+        new_window = sg.Window(new_window_title, layout=ui.main_layout(), grab_anywhere=False, size=(1280, 600),
+                               resizable=True)
+        window.close()
+        del window
+        return new_window
+    return window
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean

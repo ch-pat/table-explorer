@@ -44,4 +44,7 @@ while True:  # Main update loop
     if event == Keys.MENUCHANGESUBJECTSFOLDER:
         callbacks.menu_change_subjects_folder()
 
+    if event == Keys.MENUCHANGEEXCELFILE:
+        window = callbacks.menu_change_excel_file(window)
+
 window.close()
