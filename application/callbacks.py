@@ -1,3 +1,5 @@
+import time
+
 import PySimpleGUI as sg
 from application import ui
 from application.strings import Strings
@@ -86,6 +88,11 @@ def menu_create_folders():
             else:
                 sg.popup(f"Non è stato necessario creare nuove cartelle.")
 
+
+def menu_change_subjects_folder():
+    new_folder = ui.edit_subjects_folder_window()
+    if new_folder:
+        sg.user_settings_set_entry("subjects_folder", new_folder)
 
 # ---- HELPER FUNCTIONS ---- #
 """

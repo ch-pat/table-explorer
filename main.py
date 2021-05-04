@@ -10,6 +10,7 @@ sg.theme("DefaultNoMoreNagging")
 
 # Preliminary steps
 callbacks.load_settings()
+explorer.define_table()
 callbacks.first_run()
 
 window_title = f"Database in uso: {sg.user_settings()['excel_file']}"
@@ -39,5 +40,8 @@ while True:  # Main update loop
 
     if event == Keys.MENUCREATEFOLDERS:
         callbacks.menu_create_folders()
+
+    if event == Keys.MENUCHANGESUBJECTSFOLDER:
+        callbacks.menu_change_subjects_folder()
 
 window.close()

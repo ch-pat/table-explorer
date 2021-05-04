@@ -11,7 +11,7 @@ class InteractiveData:
     """
     # TODO: implement all methods dealing with the table here
     # TODO: the same InteractiveData object should be used as reference globally for modifying data.
-    def __init__(self, filepath: str = sg.user_settings()["excel_file"]):
+    def __init__(self, filepath: str):
         self._data: pd.DataFrame = pd.read_excel(filepath)
         self._view: list = self._data.values.tolist()
         self.headings: list = self.get_headings()
@@ -77,4 +77,11 @@ class InteractiveData:
 
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
-TABLE = InteractiveData()
+TABLE: InteractiveData = None
+
+
+def define_table():
+    sg.user_settings_load()
+    excel_file = sg.user_settings()["excel_file"]
+    global TABLE
+    TABLE = InteractiveData(excel_file)

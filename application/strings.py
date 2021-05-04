@@ -5,6 +5,7 @@ class Strings:
     CONFIRM = "Conferma"
     CONFIGURATION = "Configurazione"
     FILL_CONFIG = "Selezionare sia la cartella dei soggetti che il file Excel da usare come database per procedere."
+    FILL_TEXT = "Compilare il campo per proseguire"
     CONFIG_NOT_EXISTS = "Il file o la cartella selezionati non esistono.\nRieffettuare la selezione."
     CONFIG_ERROR = "Rilevato un errore nella configurazione esistente.\nPuò essere dovuto allo spostamento del file" \
                    " usato come database o della cartella soggetti.\nRitorno alla configurazione iniziale."

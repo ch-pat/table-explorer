@@ -82,6 +82,8 @@ def edit_settings_window() -> (str, str):
                 window[Keys.FILLCONFIGTEXT].update(visible=True)
             else:
                 if os.path.isdir(subj_folder) and os.path.isfile(excel_file):
+                    window.close()
+                    del window
                     return subj_folder, excel_file
                 else:
                     sg.popup(Strings.CONFIG_NOT_EXISTS)
@@ -113,3 +115,42 @@ def yes_no_window(text: str) -> bool:
     window.close()
     del window
     return answer
+
+
+def edit_subjects_folder_window():
+    """
+    Asks for a new location for the subjects directory
+    Return the specified directory or None
+    """
+
+    layout = [
+        [sg.Text(f"La cartella attualmente in uso come cartella Soggetti (ovvero la cartella contenente le cartelle "
+                 f"codici fiscali) è: {sg.user_settings()['subjects_folder']}\n\n"
+                 f"Se si desidera modificare la cartella Soggetti, selezionarla e confermare, altrimenti annullare.")],
+        [sg.Input(readonly=True), sg.FolderBrowse(Strings.CHOOSE_FOLDER_SUBJECTS, key=Keys.SUBJECTSFOLDER)],
+        [sg.Text(Strings.FILL_TEXT, visible=False, key=Keys.FILLCONFIGTEXT)],
+        [sg.Button(Strings.CANCEL), sg.Button(Strings.CONFIRM)]
+    ]
+
+    window = sg.Window("Modifica Cartella Soggetti", layout)
+
+    while True:
+        event, values = window.read()
+
+        if event in (sg.WINDOW_CLOSED, Strings.CANCEL):
+            break
+
+        if event == Strings.CONFIRM:
+            subj_folder = values[Keys.SUBJECTSFOLDER]
+            if not subj_folder:
+                window[Keys.FILLCONFIGTEXT].update(visible=True)
+            else:
+                if os.path.isdir(subj_folder):
+                    window.close()
+                    del window
+                    return subj_folder
+                else:
+                    sg.popup(Strings.CONFIG_NOT_EXISTS)
+
+    window.close()
+    del window
