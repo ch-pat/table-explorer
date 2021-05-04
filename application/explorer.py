@@ -75,5 +75,6 @@ class InteractiveData:
         cf_heading = self.get_headings()[self.get_codice_fiscale_index()]
         return self.data[cf_heading].values.tolist()
 
+
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
 TABLE = InteractiveData()

@@ -33,6 +33,19 @@ def load_settings():
             settings.save()
 
 
+def first_run():
+    """
+    Only runs on first run
+    Asks user to generate the codice fiscale folders
+    other important configuration could be added later on
+    """
+    if "first_run" not in sg.user_settings().keys():
+        menu_create_folders()
+        print(sg.user_settings())
+        sg.user_settings_set_entry("first_run", False)
+        sg.user_settings_save()
+
+
 def open_subject_folder(row_index, row_content):
     # IMPORTANT indexes refer to the current view, NOT THE ACTUAL DATA
     # shouldn't matter here because no change is made to the data, but keep in mind
