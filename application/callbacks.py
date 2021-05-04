@@ -52,6 +52,28 @@ def open_subject_folder(row_index, row_content):
                 sg.popup_error(Strings.WRITE_ERROR)
 
 
+def menu_create_folders():
+    if ui.yes_no_window(Strings.MENU_CREATE_FOLDERS):
+        cf_list = explorer.TABLE.get_codice_fiscale_list()
+        subj_folder = sg.user_settings()["subjects_folder"]
+        count = 0
+        if not os.path.isdir(subj_folder):
+            sg.popup_error(f"Il percorso selezionato per la cartella soggetti ({subj_folder}) non è una cartella.")
+        else:
+            for cf in cf_list:
+                full_path = os.path.join(subj_folder, cf)
+                if not os.path.isdir(full_path):  # Only if folder doesn't already exist
+                    try:
+                        os.mkdir(full_path)
+                        count += 1
+                    except Exception:  # TODO: narrow the error down if encountered
+                        sg.popup_error(Strings.WRITE_ERROR)
+            if count > 0:
+                sg.popup(f"Creazione cartelle codice fiscale completata! Create {count} cartelle.")
+            else:
+                sg.popup(f"Non è stato necessario creare nuove cartelle.")
+
+
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean

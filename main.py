@@ -36,4 +36,7 @@ while True:  # Main update loop
         selected_row_content = tb.get()[selected_row]
         callbacks.open_subject_folder(selected_row, selected_row_content)
 
+    if event == Keys.MENUCREATEFOLDERS:
+        callbacks.menu_create_folders()
+
 window.close()
