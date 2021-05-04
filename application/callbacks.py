@@ -107,7 +107,7 @@ def menu_change_excel_file(window: sg.Window) -> sg.Window:
         explorer.TABLE = explorer.InteractiveData(new_excel_file)
         new_window_title = f"Database in uso: {sg.user_settings()['excel_file']}"
         new_window = sg.Window(new_window_title, layout=ui.main_layout(), grab_anywhere=False, size=(1280, 600),
-                               resizable=True)
+                               location=(0, 0), resizable=True)
         window.close()
         del window
         return new_window
