@@ -11,40 +11,44 @@ from application import explorer
 # ---- LAYOUTS ---- #
 
 def main_layout() -> list:
-    headers = [
-        "nome",
-        "cognome",
-        "Codice Fiscale",
-        "indirizzo",
-        "cap",
-        "comune",
-        "prov",
-        "telefono 1",
-        "telefono 2",
-        "mail 1",
-        "mail 2",
-        "persone collegate",
-        "rapporto",
-        "servizio CAF",
-        "servizio Patronato",
-        "prodotto Finanziario",
-        "Note"
-    ]  # TODO: either keep hard-coded (for the specific person) or grab from the above file
+    # TODO: either keep hard-coded (for the specific person) or grab from the above file
+
+    table_and_search = [
+        [sg.Menu(menu_layout())],
+        [sg.Text(Strings.SEARCH), sg.Input(key=Keys.SEARCHINPUT, change_submits=True), sg.T("(Per ora cerca solo nella colonna nome)")],
+        [sg.Column([
+            [sg.Table(values=explorer.TABLE.view,
+                      headings=explorer.TABLE.headings,
+                      # Allows for only one item to be selected at a time and causes an event on single click
+                      select_mode=sg.TABLE_SELECT_MODE_BROWSE,
+                      display_row_numbers=False,
+                      auto_size_columns=True,
+                      vertical_scroll_only=True,
+                      justification="left",
+                      alternating_row_color='light gray',
+                      num_rows=min(35, len(explorer.TABLE.view)),
+                      enable_events=True,
+                      key=Keys.MAINTABLE)]
+            ], scrollable=True, size=(800, 600), element_justification="left", expand_x=True, expand_y=True)]
+    ]
+
+    fields_and_buttons = [
+        [sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)],
+        [sg.T("Spazio vuoto riservato per l'interfaccia di modifica e inserimento dati")]
+    ]
 
     layout = [
-        [sg.Input(key=Keys.SEARCHINPUT), sg.Button(Strings.SEARCH, key=Keys.SEARCH)],
-        [sg.Table(values=explorer.TABLE.view,
-                  headings=headers,
-                  # Allows for only one item to be selected at a time and causes an event on single click
-                  select_mode=sg.TABLE_SELECT_MODE_BROWSE,
-                  display_row_numbers=False,
-                  auto_size_columns=True,
-                  justification="left",
-                  num_rows=min(25, len(explorer.TABLE.view)),
-                  enable_events=True,
-                  key=Keys.MAINTABLE)]
+        [sg.Column(table_and_search), sg.Column(fields_and_buttons)]
     ]
     return layout
+
+
+def menu_layout() -> list:
+    menu = [
+        ["Configurazione",
+            ["Cambia file Excel::MENUCHANGEEXCELFILE", "Cambia cartella soggetti::CHANGESUBJECTSFOLDER", "Crea cartelle soggetti::MENUCREATEFOLDERS"]]
+    ]
+    return menu
 
 # ---- WINDOWS ---- #
 
@@ -81,3 +85,31 @@ def edit_settings_window() -> (str, str):
                     return subj_folder, excel_file
                 else:
                     sg.popup(Strings.CONFIG_NOT_EXISTS)
+
+
+def yes_no_window(text: str) -> bool:
+    """
+    Provides a window with the text specified and a 'cancel or confirm' prompt
+    Returns True if confirm, False otherwise
+    """
+    layout = [
+        [sg.Text(text)],
+        [sg.Button(Strings.CANCEL), sg.Button(Strings.CONFIRM)]
+    ]
+
+    window = sg.Window(text, layout=layout, modal=True)
+
+    while True:
+        event, values = window.read()
+
+        if event in (sg.WINDOW_CLOSED, Strings.CANCEL):
+            answer = False
+            break
+
+        if event == Strings.CONFIRM:
+            answer = True
+            break
+
+    window.close()
+    del window
+    return answer
