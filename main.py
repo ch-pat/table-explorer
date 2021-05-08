@@ -1,6 +1,4 @@
 import PySimpleGUI as sg
-import pandas as pd
-import threading
 
 from application import ui, explorer, callbacks
 from application.strings import Strings, Keys
@@ -27,17 +25,10 @@ while True:  # Main update loop
     print(event)
 
     if event == Keys.SEARCHINPUT:
-        # TODO: rework filtering into a class function and make use of view
-        filter_word = window[Keys.SEARCHINPUT].get()
-        filtered_data = explorer.TABLE.data[explorer.TABLE.data['nome'].str.contains(filter_word, na=False)]
-        tb.update(filtered_data.values.tolist())
+        callbacks.filter_table(window)
 
-    if event == Keys.OPENFOLDER and tb.SelectedRows:  # Only run if a row is actually selected
-        # IMPORTANT indexes refer to the current view, NOT THE ACTUAL DATA
-        # shouldn't matter here because no change is made to the data, but keep in mind
-        selected_row = tb.SelectedRows[0]
-        selected_row_content = tb.get()[selected_row]
-        callbacks.open_subject_folder(selected_row, selected_row_content)
+    if event == Keys.OPENFOLDER:
+        callbacks.open_subject_folder(window)
 
     if event == Keys.MENUCREATEFOLDERS:
         callbacks.menu_create_folders()

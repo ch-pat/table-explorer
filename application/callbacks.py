@@ -48,9 +48,16 @@ def first_run():
         sg.user_settings_save()
 
 
-def open_subject_folder(row_index, row_content):
+def open_subject_folder(window: sg.Window):
     # IMPORTANT indexes refer to the current view, NOT THE ACTUAL DATA
     # shouldn't matter here because no change is made to the data, but keep in mind
+    tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
+    if not tb.SelectedRows:  # Only run if a row is actually selected
+        return
+
+    row_index = tb.SelectedRows[0]
+    row_content = tb.get()[row_index]
+
     cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
     subj_folder = sg.user_settings()["subjects_folder"]
     full_path = os.path.join(subj_folder, cf)
@@ -112,6 +119,19 @@ def menu_change_excel_file(window: sg.Window) -> sg.Window:
         del window
         return new_window
     return window
+
+
+def filter_table(window: sg.Window):
+    """ Applies a filter to the table view and update the Table element to reflect the changes """
+    tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
+
+    filter_word = window[Keys.SEARCHINPUT].get()
+    column = "nome"
+    # TODO: ^^^ update these two once more filtering options are added
+    explorer.TABLE.filter_view(column, filter_word)  # Apply filter(s)
+    tb.update(explorer.TABLE.view)  # Update ui table
+
+
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean

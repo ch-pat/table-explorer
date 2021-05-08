@@ -75,6 +75,16 @@ class InteractiveData:
         cf_heading = self.get_headings()[self.get_codice_fiscale_index()]
         return self.data[cf_heading].values.tolist()
 
+    def filter_view(self, column: str, query: str):
+        """
+        Modifies the view according to the filter defined
+        :param column: column on which the filtering must be performed
+        :param query: the string to search within the column
+        """
+
+        filtered_data = self.data[self.data[column].str.contains(query, na=False)]
+        self.view = filtered_data
+
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
 TABLE: InteractiveData = None
