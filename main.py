@@ -24,7 +24,7 @@ while True:  # Main update loop
 
     print(event)
 
-    if event == Keys.SEARCHINPUT:
+    if event in Keys.SEARCHES:  # List of all search input fields (they trigger events on change)
         callbacks.filter_table(window)
 
     if event == Keys.OPENFOLDER:

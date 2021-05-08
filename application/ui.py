@@ -14,7 +14,12 @@ def main_layout() -> list:
 
     table_and_search = [
         [sg.Menu(menu_layout())],
-        [sg.Text(Strings.SEARCH), sg.Input(key=Keys.SEARCHINPUT, change_submits=True), sg.T("(Per ora cerca solo nella colonna nome)")],
+        [sg.Text(Strings.SEARCH),
+            # Search input boxes
+            sg.Input(key=Keys.SEARCHINPUTNOME, change_submits=True, size=(10, 1)),
+            sg.Input(key=Keys.SEARCHINPUTCAP, change_submits=True, size=(10, 1)),
+            sg.Input(key=Keys.SEARCHINPUTCF, change_submits=True, size=(10, 1)),
+            sg.T("(Per ora cerca solo nella colonna nome)")],
         [sg.Column([
             [sg.Table(values=explorer.TABLE.view,
                       headings=explorer.TABLE.headings,

@@ -125,10 +125,10 @@ def filter_table(window: sg.Window):
     """ Applies a filter to the table view and update the Table element to reflect the changes """
     tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
 
-    filter_word = window[Keys.SEARCHINPUT].get()
-    column = "nome"
-    # TODO: ^^^ update these two once more filtering options are added
-    explorer.TABLE.filter_view(column, filter_word)  # Apply filter(s)
+    filter_words = [window[i].get() for i in Keys.SEARCHES]
+    columns = Keys.SEARCHES_COLUMNS
+
+    explorer.TABLE.filter_view(columns, filter_words)  # Apply filter(s)
     tb.update(explorer.TABLE.view)  # Update ui table
 
 

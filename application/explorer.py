@@ -75,15 +75,16 @@ class InteractiveData:
         cf_heading = self.get_headings()[self.get_codice_fiscale_index()]
         return self.data[cf_heading].values.tolist()
 
-    def filter_view(self, column: str, query: str):
+    def filter_view(self, columns: list, queries: list):
         """
-        Modifies the view according to the filter defined
-        :param column: column on which the filtering must be performed
-        :param query: the string to search within the column
+        Modifies the view according to the filters defined
+        :param columns: columns on which the filtering must be performed
+        :param queries: the strings to search within the column
         """
-
-        filtered_data = self.data[self.data[column].str.contains(query, na=False)]
-        self.view = filtered_data
+        dataframe_view = self.data.__deepcopy__()
+        for (column, query) in zip(columns, queries):
+            dataframe_view = dataframe_view[dataframe_view[column].str.contains(query, na=False)]
+        self.view = dataframe_view
 
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file

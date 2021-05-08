@@ -24,8 +24,17 @@ class Strings:
 
 
 class Keys:
-    SEARCHINPUT = "-SEARCHINPUT-"
+    SEARCHINPUTNOME = "-SEARCHINPUTNOME-"
+    SEARCHINPUTCAP = "-SEARCHINPUTCAP-"
+    SEARCHINPUTCF = "-SEARCHINPUTCF-"
     SEARCH = "-SEARCH-"
+
+    # The two lists must correspond -- not elegant, should find a different way
+    SEARCHES = [SEARCHINPUTNOME, SEARCHINPUTCAP, SEARCHINPUTCF]
+    SEARCHES_COLUMNS = [  # Contains column names as specified in InteractiveData.get_headings()
+        'nome', 'cap', 'Codice Fiscale'
+    ]
+
     SUBJECTSFOLDER = "-SUBJECTSFOLDER-"
     EXCELFILE = "-EXCELFILE-"
     CONFIRM = "-CONFIRM-"
