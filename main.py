@@ -13,7 +13,8 @@ callbacks.first_run()
 
 window_title = f"Database in uso: {sg.user_settings()['excel_file']}"
 window = sg.Window(window_title, layout=ui.main_layout(), grab_anywhere=False, size=(1280, 600), resizable=True,
-                   location=(0, 0))
+                   location=(0, 0), finalize=True)
+window.maximize()
 tb: sg.Table = window[Keys.MAINTABLE]
 
 while True:  # Main update loop

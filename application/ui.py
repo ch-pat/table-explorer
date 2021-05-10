@@ -16,10 +16,10 @@ def main_layout() -> list:
         [sg.Menu(menu_layout())],
         [sg.Text(Strings.SEARCH),
             # Search input boxes
-            sg.Input(key=Keys.SEARCHINPUTNOME, change_submits=True, size=(10, 1)),
-            sg.Input(key=Keys.SEARCHINPUTCAP, change_submits=True, size=(10, 1)),
-            sg.Input(key=Keys.SEARCHINPUTCF, change_submits=True, size=(10, 1)),
-            sg.T("(Per ora cerca solo nella colonna nome)")],
+            sg.Text("Nome:"), sg.Input(key=Keys.SEARCHINPUTNOME, change_submits=True, size=(10, 1)),
+            sg.Text("CAP:"), sg.Input(key=Keys.SEARCHINPUTCAP, change_submits=True, size=(10, 1)),
+            sg.Text("CF:"), sg.Input(key=Keys.SEARCHINPUTCF, change_submits=True, size=(10, 1)),
+         ],
         [sg.Column([
             [sg.Table(values=explorer.TABLE.view,
                       headings=explorer.TABLE.headings,
@@ -37,12 +37,13 @@ def main_layout() -> list:
     ]
 
     fields_and_buttons = [
-        [sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)],
-        [sg.T("Spazio vuoto riservato per l'interfaccia di modifica e inserimento dati")]
+        [sg.Text("Modifica riga selezionata", justification='center')],
+        [sg.Column(edit_fields(), scrollable=True, vertical_scroll_only=True, expand_y=True)],
+        [sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)]
     ]
 
     layout = [
-        [sg.Column(table_and_search), sg.Column(fields_and_buttons)]
+        [sg.Column(table_and_search, size=(800, 650)), sg.Column(fields_and_buttons, expand_x=True, expand_y=True)]
     ]
     return layout
 
@@ -53,6 +54,49 @@ def menu_layout() -> list:
             ["Cambia file Excel::MENUCHANGEEXCELFILE", "Cambia cartella soggetti::CHANGESUBJECTSFOLDER", "Crea cartelle soggetti::MENUCREATEFOLDERS"]]
     ]
     return menu
+
+
+def labelled_input(label: str, key: str = None, size: tuple = (15, 1)) -> sg.Column:
+    if not key:
+        key = label
+    col = sg.Column([
+        [sg.Text(label, justification="left")],
+        [sg.Input(key=key, size=size)]
+    ], scrollable=False, element_justification='left', justification='left')
+    return col
+
+
+def edit_fields() -> list:
+    """ Returns the layout containing all fields for table row editing """
+    # "nome", "cognome", "Codice Fiscale",
+    # "indirizzo", "cap", "comune", "prov",
+    # "telefono 1", "telefono 2",
+    # "mail 1", "mail 2",
+    # "persone collegate", "rapporto", "VAI"
+    # "servizio CAF", "servizio Patronato",
+    # "prodotto Finanziario",
+    # "Note"
+    layout = [
+        [labelled_input('nome', key=Keys.EDITNOME), labelled_input('cognome', key=Keys.EDITCOGNOME),
+         labelled_input('Codice Fiscale', size=(18, 1), key=Keys.EDITCODICEFISCALE)],
+        [labelled_input('indirizzo', size=(20, 1), key=Keys.EDITINDIRIZZO),
+         labelled_input('cap', size=(7, 1), key=Keys.EDITCAP),
+         labelled_input('comune', key=Keys.EDITCOMUNE), labelled_input('prov', size=(4, 1), key=Keys.EDITPROV)],
+        [labelled_input('telefono 1', key=Keys.EDITTELEFONO1), labelled_input('telefono 2', key=Keys.EDITTELEFONO2)],
+        [labelled_input('mail 1', size=(20, 1), key=Keys.EDITMAIL1),
+         labelled_input('mail 2', size=(20, 1), key=Keys.EDITMAIL2)],
+        [labelled_input('persone collegate', key=Keys.EDITCOLLEGATE), labelled_input('rapporto', key=Keys.EDITRAPPORTO),
+         sg.Button("Vai a soggetto", key=Keys.EDITVAI)],
+        [labelled_input('servizio CAF', key=Keys.EDITCAF)],
+        [labelled_input('servizio Patronato', key=Keys.EDITPATRONATO),
+         labelled_input('prodotto Finanziario', key=Keys.EDITFINANZIARIO)],
+        [sg.Column([
+            [sg.Text("Note", justification="left")],
+            [sg.Multiline(size=(50, 4), key=Keys.EDITNOTE)]
+        ], scrollable=False, element_justification='left', justification='left')]
+    ]
+    return layout
+
 
 # ---- WINDOWS ---- #
 

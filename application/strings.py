@@ -35,6 +35,28 @@ class Keys:
         'nome', 'cap', 'Codice Fiscale'
     ]
 
+    # ---- EDIT FIELDS ---- #
+
+    EDITNOME =          "-EDITNOME-"
+    EDITCOGNOME =       "-EDITCOGNOME-"
+    EDITCODICEFISCALE = "-EDITCODICEFISCALE-"
+    EDITINDIRIZZO =     "-EDITINDIRIZZO-"
+    EDITCAP =           "-EDITCAP-"
+    EDITCOMUNE =        "-EDITCOMUNE-"
+    EDITPROV =          "-EDITPROV-"
+    EDITTELEFONO1 =     "-EDITTELEFONO1-"
+    EDITTELEFONO2 =     "-EDITTELEFONO2-"
+    EDITMAIL1 =         "-EDITMAIL1-"
+    EDITMAIL2 =         "-EDITMAIL2-"
+    EDITCOLLEGATE =     "-EDITCOLLEGATE-"
+    EDITRAPPORTO =      "-EDITRAPPORTO-"
+    EDITVAI =           "-EDITVAI-"
+    EDITCAF =           "-EDITCAF-"
+    EDITPATRONATO =     "-EDITPATRONATO-"
+    EDITFINANZIARIO =   "-EDITFINANZIARIO-"
+    EDITNOTE =          "-EDITNOTE-"
+
+
     SUBJECTSFOLDER = "-SUBJECTSFOLDER-"
     EXCELFILE = "-EXCELFILE-"
     CONFIRM = "-CONFIRM-"
