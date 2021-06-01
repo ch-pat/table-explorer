@@ -83,9 +83,15 @@ class InteractiveData:
         """
         dataframe_view = self.data.__deepcopy__()
         for (column, query) in zip(columns, queries):
-            dataframe_view = dataframe_view[dataframe_view[column].str.contains(query, na=False)]
+            dataframe_view = dataframe_view[dataframe_view[column].str.contains(query, na=False, case=False)]
         self.view = dataframe_view
 
+    def gives_results(self, columns: list, queries: list) -> bool:
+        """ Returns True if the query contains any result """
+        results = self.data.__deepcopy__()
+        for (column, query) in zip(columns, queries):
+            results = results[results[column].str.contains(query, na=False, case=False)]
+        return len(results) > 0
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
 TABLE: InteractiveData = None

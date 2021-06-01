@@ -26,7 +26,7 @@ while True:  # Main update loop
     print(event)
 
     if event in Keys.SEARCHES:  # List of all search input fields (they trigger events on change)
-        callbacks.filter_table(window)
+        callbacks.filter_table_from_elements(window)
 
     if event == Keys.OPENFOLDER:
         callbacks.open_subject_folder(window)
@@ -39,5 +39,8 @@ while True:  # Main update loop
 
     if event == Keys.MENUCHANGEEXCELFILE:
         window = callbacks.menu_change_excel_file(window)
+
+    if event == Keys.EDITVAI:
+        callbacks.filter_persone_collegate(window)
 
 window.close()

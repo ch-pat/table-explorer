@@ -24,6 +24,32 @@ class Strings:
 
 
 class Keys:
+    # "nome", "cognome", "Codice Fiscale",
+    # "indirizzo", "cap", "comune", "prov",
+    # "telefono 1", "telefono 2",
+    # "mail 1", "mail 2",
+    # "persone collegate", "rapporto",
+    # "servizio CAF", "servizio Patronato",
+    # "prodotto Finanziario",
+    # "Note"
+    COLNOME = "nome"
+    COLCOGNOME = "cognome"
+    COLCF = "Codice Fiscale"
+    COLINDIRIZZO = "indirizzo"
+    COLCAP = "cap"
+    COLCOMUNE = "comune"
+    COLPROV = "prov"
+    COLTELEFONO1 = "telefono 1"
+    COLTELEFONO2 = "telefono 2"
+    COLMAIL1 = "mail 1"
+    COLMAIL2 = "mail 2"
+    COLCOLLEGATE = "persone collegate"
+    COLRAPPORT0 = "rapporto"
+    COLSERVIZIOCAF = "servizio CAF"
+    COLSERVIZIOPATRONATO = "servizio Patronato"
+    COLFINANZIARIO = "prodotto Finanziario"
+    COLNOTE = "Note"
+
     SEARCHINPUTNOME = "-SEARCHINPUTNOME-"
     SEARCHINPUTCAP = "-SEARCHINPUTCAP-"
     SEARCHINPUTCF = "-SEARCHINPUTCF-"

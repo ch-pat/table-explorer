@@ -121,16 +121,36 @@ def menu_change_excel_file(window: sg.Window) -> sg.Window:
     return window
 
 
-def filter_table(window: sg.Window):
-    """ Applies a filter to the table view and update the Table element to reflect the changes """
-    tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
-
+def filter_table_from_elements(window: sg.Window):
+    """ Applies a filter to the table view and update the Table element to reflect the changes
+        Uses keywords filled in the ui search forms
+    """
     filter_words = [window[i].get() for i in Keys.SEARCHES]
     columns = Keys.SEARCHES_COLUMNS
+    filter_table(window, columns, filter_words)
+
+
+def filter_table(window: sg.Window, columns: list, filter_words: list):
+    tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
 
     explorer.TABLE.filter_view(columns, filter_words)  # Apply filter(s)
     tb.update(explorer.TABLE.view)  # Update ui table
 
+
+def filter_persone_collegate(window: sg.Window):
+    persone_collegate = window[Keys.EDITCOLLEGATE].get()
+    columns1 = [Keys.COLNOME, Keys.COLCOGNOME]
+    columns2 = columns1[::-1]
+    query = [persone_collegate.split()[0], persone_collegate.split()[-1]]
+
+    # No guarantee in how this is written, try assuming it's [name, surname] or viceversa
+    # Hopefully it's just two names most times
+    if explorer.TABLE.gives_results(columns1, query):
+        filter_table(window, columns1, query)
+    elif explorer.TABLE.gives_results(columns2, query):
+        filter_table(window, columns2, query)
+    else:
+        filter_table(window, [], [])
 
 # ---- HELPER FUNCTIONS ---- #
 """
