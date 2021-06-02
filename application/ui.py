@@ -7,11 +7,10 @@ from application.strings import Keys
 from application.strings import Strings
 from application import explorer
 
-
 # ---- LAYOUTS ---- #
 
 def main_layout() -> list:
-
+    w, h = width, height
     table_and_search = [
         [sg.Menu(menu_layout())],
         [sg.Text(Strings.SEARCH),
@@ -33,7 +32,7 @@ def main_layout() -> list:
                       num_rows=min(35, len(explorer.TABLE.view)),
                       enable_events=True,
                       key=Keys.MAINTABLE)]
-            ], scrollable=True, size=(800, 600), element_justification="left", expand_x=True, expand_y=True)]
+            ], scrollable=True, size=(w*2/3, h*5/6), element_justification="left", expand_x=True, expand_y=True)]
     ]
 
     fields_and_buttons = [
@@ -43,7 +42,7 @@ def main_layout() -> list:
     ]
 
     layout = [
-        [sg.Column(table_and_search, size=(800, 650)), sg.Column(fields_and_buttons, expand_x=True, expand_y=True)]
+        [sg.Column(table_and_search), sg.Column(fields_and_buttons, expand_x=True, expand_y=True)]
     ]
     return layout
 
@@ -150,7 +149,7 @@ def yes_no_window(text: str) -> bool:
     window = sg.Window(text, layout=layout, modal=True)
 
     while True:
-        event, values = window.read()
+        event, _ = window.read()
 
         if event in (sg.WINDOW_CLOSED, Strings.CANCEL):
             answer = False
@@ -242,3 +241,13 @@ def edit_excel_file_window():
 
     window.close()
     del window
+
+# Global ui utilities
+def get_screen_dimensions() -> (int, int):
+    temp_window = sg.Window("tmp", [[]], alpha_channel=0, finalize=True)
+    w, h = temp_window.get_screen_dimensions()
+    temp_window.close()
+    del temp_window
+    return w, h
+
+width, height = get_screen_dimensions()
