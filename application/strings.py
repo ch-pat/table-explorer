@@ -24,41 +24,54 @@ class Strings:
 
 
 class Keys:
-    # "nome", "cognome", "Codice Fiscale",
-    # "indirizzo", "cap", "comune", "prov",
-    # "telefono 1", "telefono 2",
-    # "mail 1", "mail 2",
-    # "persone collegate", "rapporto",
-    # "servizio CAF", "servizio Patronato",
-    # "prodotto Finanziario",
-    # "Note"
-    COLNOME = "nome"
-    COLCOGNOME = "cognome"
+    # "Nome", "Cognome", "Codice Fiscale",
+    # "Indirizzo", "CAP", "Comune", "Provincia",
+    # "Telefono 1", "Telefono 2",
+    # "E-mail 1", "E-mail 2",
+    # "Persone collegate", "Rapporto",
+    # "Servizio CAF", "Servizio Patronato",
+    # "Prodotto Finanziario",
+    # "Note",
+    # "Dettagli Aggiuntivi",
+    # "Data Tesseramento",
+    # "Tipo Tessera",
+    # "Numero Ricevuta",
+    # "Contributo Volontario",
+    # "Uscita"
+
+    COLNOME = "Nome"
+    COLCOGNOME = "Cognome"
     COLCF = "Codice Fiscale"
-    COLINDIRIZZO = "indirizzo"
-    COLCAP = "cap"
-    COLCOMUNE = "comune"
-    COLPROV = "prov"
-    COLTELEFONO1 = "telefono 1"
-    COLTELEFONO2 = "telefono 2"
-    COLMAIL1 = "mail 1"
-    COLMAIL2 = "mail 2"
-    COLCOLLEGATE = "persone collegate"
-    COLRAPPORT0 = "rapporto"
-    COLSERVIZIOCAF = "servizio CAF"
-    COLSERVIZIOPATRONATO = "servizio Patronato"
-    COLFINANZIARIO = "prodotto Finanziario"
+    COLINDIRIZZO = "Indirizzo"
+    COLCAP = "CAP"
+    COLCOMUNE = "Comune"
+    COLPROV = "Provincia"
+    COLTELEFONO1 = "Telefono 1"
+    COLTELEFONO2 = "Telefono 2"
+    COLMAIL1 = "E-mail 1"
+    COLMAIL2 = "E-mail 2"
+    COLCOLLEGATE = "Persone Collegate"
+    COLRAPPORT0 = "Rapporto"
+    COLSERVIZIOCAF = "Servizio CAF"
+    COLSERVIZIOPATRONATO = "Servizio Patronato"
+    COLFINANZIARIO = "Prodotto Finanziario"
     COLNOTE = "Note"
+    COLDETTAGLI = "Dettagli Aggiuntivi",
+    COLDATATESSERA = "Data Tesseramento",
+    COLTIPOTESSERA = "Tipo Tessera",
+    COLRICEVUTA = "Numero Ricevuta",
+    COLCONTRIBUTO = "Contributo Volontario",
+    COLUSCITA = "Uscita"
 
     SEARCHINPUTNOME = "-SEARCHINPUTNOME-"
-    SEARCHINPUTCAP = "-SEARCHINPUTCAP-"
+    SEARCHINPUTCOGNOME = "-SEARCHINPUTCOGNOME-"
     SEARCHINPUTCF = "-SEARCHINPUTCF-"
     SEARCH = "-SEARCH-"
 
     # The two lists must correspond -- not elegant, should find a different way
-    SEARCHES = [SEARCHINPUTNOME, SEARCHINPUTCAP, SEARCHINPUTCF]
+    SEARCHES = [SEARCHINPUTNOME, SEARCHINPUTCOGNOME, SEARCHINPUTCF]
     SEARCHES_COLUMNS = [  # Contains column names as specified in InteractiveData.get_headings()
-        'nome', 'cap', 'Codice Fiscale'
+        'Nome', 'Cognome', 'Codice Fiscale'
     ]
 
     # ---- EDIT FIELDS ---- #
@@ -81,6 +94,12 @@ class Keys:
     EDITPATRONATO =     "-EDITPATRONATO-"
     EDITFINANZIARIO =   "-EDITFINANZIARIO-"
     EDITNOTE =          "-EDITNOTE-"
+    EDITDETTAGLI =      "-EDITDETTAGLI-",
+    EDITDATATESSERA =   "-EDITDATATESSERA-",
+    EDITTIPOTESSERA =   "-EDITTIPOTESSERA-",
+    EDITRICEVUTA =      "-EDITRICEVUTA-",
+    EDITCONTRIBUTO =    "-EDITCONTRIBUTO-",
+    EDITUSCITA =        "-EDITUSCITA-"
 
 
     SUBJECTSFOLDER = "-SUBJECTSFOLDER-"

@@ -12,9 +12,10 @@ class InteractiveData:
     # TODO: implement all methods dealing with the table here
     # TODO: the same InteractiveData object should be used as reference globally for modifying data.
     def __init__(self, filepath: str):
-        self._data: pd.DataFrame = pd.read_excel(filepath)
-        self._view: list = self._data.values.tolist()
         self.headings: list = self.get_headings()
+        self.view_headings: list = self.get_view_headings()
+        self._data: pd.DataFrame = pd.read_excel(filepath)
+        self._view: list = self._data[self.view_headings].values.tolist()
 
     @property
     def view(self) -> list:
@@ -22,7 +23,7 @@ class InteractiveData:
 
     @view.setter
     def view(self, new_view: pd.DataFrame):
-        self._view = new_view.values.tolist()
+        self._view = new_view[self.get_view_headings()].values.tolist()
 
     @property
     def data(self) -> pd.DataFrame:
@@ -35,23 +36,26 @@ class InteractiveData:
     def get_headings(self) -> list:
         # TODO maybe get from file rather than keeping hardcoded
         headings = [
-            "nome",
-            "cognome",
-            "Codice Fiscale",
-            "indirizzo",
-            "cap",
-            "comune",
-            "prov",
-            "telefono 1",
-            "telefono 2",
-            "mail 1",
-            "mail 2",
-            "persone collegate",
-            "rapporto",
-            "servizio CAF",
-            "servizio Patronato",
-            "prodotto Finanziario",
-            "Note"
+            "Nome", "Cognome", "Codice Fiscale",
+            "Indirizzo", "CAP", "Comune", "Provincia",
+            "Telefono 1", "Telefono 2",
+            "E-mail 1", "E-mail 2",
+            "Persone collegate", "Rapporto",
+            "Servizio CAF", "Servizio Patronato",
+            "Prodotto Finanziario",
+            "Note",
+            "Dettagli Aggiuntivi",
+            "Data Tesseramento",
+            "Tipo Tessera",
+            "Numero Ricevuta",
+            "Contributo Volontario",
+            "Uscita"
+        ]
+        return headings
+
+    def get_view_headings(self):
+        headings = [
+            "Nome", "Cognome", "Codice Fiscale", "Telefono 1", "E-mail 1"
         ]
         return headings
 
@@ -66,7 +70,7 @@ class InteractiveData:
         Takes a list in the shape of a row of the dataset (must have same length)
         Returns the value of the codice fiscale column
         """
-        assert len(row) == len(self.headings)
+        assert len(row) == len(self.view_headings)
         idx = self.get_codice_fiscale_index()
         cf = row[idx]
         return cf.upper()
@@ -92,6 +96,7 @@ class InteractiveData:
         for (column, query) in zip(columns, queries):
             results = results[results[column].str.contains(query, na=False, case=False)]
         return len(results) > 0
+
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
 TABLE: InteractiveData = None

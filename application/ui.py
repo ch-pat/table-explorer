@@ -13,15 +13,15 @@ def main_layout() -> list:
     w, h = width, height
     table_and_search = [
         [sg.Menu(menu_layout())],
-        [sg.Text(Strings.SEARCH),
+        [sg.Text("🔍"),
             # Search input boxes
             sg.Text("Nome:"), sg.Input(key=Keys.SEARCHINPUTNOME, change_submits=True, size=(10, 1)),
-            sg.Text("CAP:"), sg.Input(key=Keys.SEARCHINPUTCAP, change_submits=True, size=(10, 1)),
+            sg.Text("Cognome:"), sg.Input(key=Keys.SEARCHINPUTCOGNOME, change_submits=True, size=(10, 1)),
             sg.Text("CF:"), sg.Input(key=Keys.SEARCHINPUTCF, change_submits=True, size=(10, 1)),
          ],
         [sg.Column([
             [sg.Table(values=explorer.TABLE.view,
-                      headings=explorer.TABLE.headings,
+                      headings=explorer.TABLE.view_headings,
                       # Allows for only one item to be selected at a time and causes an event on single click
                       select_mode=sg.TABLE_SELECT_MODE_BROWSE,
                       display_row_numbers=False,
@@ -32,13 +32,12 @@ def main_layout() -> list:
                       num_rows=min(35, len(explorer.TABLE.view)),
                       enable_events=True,
                       key=Keys.MAINTABLE)]
-            ], scrollable=True, size=(w*2/3, h*5/6), element_justification="left", expand_x=True, expand_y=True)]
+            ], size=(w*4/9, h*5/6), element_justification="left", expand_x=True, expand_y=True)]
     ]
 
     fields_and_buttons = [
         [sg.Text("Modifica riga selezionata", justification='center')],
         [sg.Column(edit_fields(), scrollable=True, vertical_scroll_only=True, expand_y=True)],
-        [sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)]
     ]
 
     layout = [
@@ -55,7 +54,7 @@ def menu_layout() -> list:
     return menu
 
 
-def labelled_input(label: str, key: str = None, size: tuple = (15, 1)) -> sg.Column:
+def labelled_input(label: str, key: str = None, size: tuple = (20, 1)) -> sg.Column:
     if not key:
         key = label
     col = sg.Column([
@@ -63,7 +62,6 @@ def labelled_input(label: str, key: str = None, size: tuple = (15, 1)) -> sg.Col
         [sg.Input(key=key, size=size)]
     ], scrollable=False, element_justification='left', justification='left')
     return col
-
 
 def edit_fields() -> list:
     """ Returns the layout containing all fields for table row editing """
@@ -74,25 +72,57 @@ def edit_fields() -> list:
     # "persone collegate", "rapporto", "VAI"
     # "servizio CAF", "servizio Patronato",
     # "prodotto Finanziario",
-    # "Note"
+    # "Note",
+    # "Dettagli Aggiuntivi",
+    # "Data Tesseramento",
+    # "Tipo Tessera",
+    # "Numero Ricevuta",
+    # "Contributo Volontario",
+    # "Uscita"
+
     layout = [
-        [labelled_input('nome', key=Keys.EDITNOME), labelled_input('cognome', key=Keys.EDITCOGNOME),
-         labelled_input('Codice Fiscale', size=(18, 1), key=Keys.EDITCODICEFISCALE)],
-        [labelled_input('indirizzo', size=(20, 1), key=Keys.EDITINDIRIZZO),
-         labelled_input('cap', size=(7, 1), key=Keys.EDITCAP),
-         labelled_input('comune', key=Keys.EDITCOMUNE), labelled_input('prov', size=(4, 1), key=Keys.EDITPROV)],
-        [labelled_input('telefono 1', key=Keys.EDITTELEFONO1), labelled_input('telefono 2', key=Keys.EDITTELEFONO2)],
-        [labelled_input('mail 1', size=(20, 1), key=Keys.EDITMAIL1),
-         labelled_input('mail 2', size=(20, 1), key=Keys.EDITMAIL2)],
-        [labelled_input('persone collegate', key=Keys.EDITCOLLEGATE), labelled_input('rapporto', key=Keys.EDITRAPPORTO),
-         sg.Button("Vai a soggetto", key=Keys.EDITVAI)],
-        [labelled_input('servizio CAF', key=Keys.EDITCAF)],
-        [labelled_input('servizio Patronato', key=Keys.EDITPATRONATO),
-         labelled_input('prodotto Finanziario', key=Keys.EDITFINANZIARIO)],
+        [sg.Frame('Dati Anagrafici', [
+            [labelled_input('Nome', key=Keys.EDITNOME), labelled_input('Cognome', key=Keys.EDITCOGNOME),
+             labelled_input('Codice Fiscale', size=(18, 1), key=Keys.EDITCODICEFISCALE)],
+            [labelled_input('Indirizzo', size=(20, 1), key=Keys.EDITINDIRIZZO),
+             labelled_input('CAP', size=(7, 1), key=Keys.EDITCAP), labelled_input('Comune', key=Keys.EDITCOMUNE),
+             labelled_input('Provincia', size=(10, 1), key=Keys.EDITPROV)]
+        ]), sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)],
+
+        [sg.Frame('Contatti', [
+            [labelled_input('Telefono 1', key=Keys.EDITTELEFONO1), labelled_input('Telefono 2', key=Keys.EDITTELEFONO2),
+             labelled_input('E-mail 1', size=(20, 1), key=Keys.EDITMAIL1),
+             labelled_input('E-mail 2', size=(20, 1), key=Keys.EDITMAIL2)]
+        ])],
+
+        [sg.Frame('Persone Collegate', [
+            [labelled_input('Persone Collegate', key=Keys.EDITCOLLEGATE),
+             labelled_input('Rapporto', key=Keys.EDITRAPPORTO), sg.Button("Vai a soggetto", key=Keys.EDITVAI)]
+        ])],
+
+        [sg.Frame('Servizi & Prodotti', [
+            [labelled_input('Servizio CAF', key=Keys.EDITCAF),
+             labelled_input('Servizio Patronato', key=Keys.EDITPATRONATO),
+             labelled_input('Prodotto Finanziario', key=Keys.EDITFINANZIARIO)]
+        ])],
+
+        [sg.Frame('Dati Tesseramento', [
+            [labelled_input('Data Tesseramento', key=Keys.EDITDATATESSERA),
+             labelled_input('Tipo Tessera', key=Keys.EDITTIPOTESSERA),
+             labelled_input('Numero Ricevuta', key=Keys.EDITRICEVUTA)],
+            [labelled_input('Contributo Volontario', key=Keys.EDITCONTRIBUTO),
+             labelled_input('Uscita', key=Keys.EDITUSCITA)]
+        ])],
+
         [sg.Column([
             [sg.Text("Note", justification="left")],
-            [sg.Multiline(size=(50, 4), key=Keys.EDITNOTE)]
-        ], scrollable=False, element_justification='left', justification='left')]
+            [sg.Multiline(size=(40, 4), key=Keys.EDITNOTE)]
+        ], scrollable=False, element_justification='left', justification='left'),
+            sg.Column([
+                [sg.Text("Dettagli Aggiuntivi", justification="left")],
+                [sg.Multiline(size=(40, 4), key=Keys.EDITDETTAGLI)]
+            ], scrollable=False, element_justification='left', justification='left')
+        ]
     ]
     return layout
 

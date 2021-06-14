@@ -60,7 +60,7 @@ def open_subject_folder(window: sg.Window):
 
     cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
     subj_folder = sg.user_settings()["subjects_folder"]
-    full_path = os.path.join(subj_folder, cf)
+    full_path = os.path.join(subj_folder, cf.upper())
     if open_dir(full_path):
         return
     else:
@@ -83,7 +83,7 @@ def menu_create_folders():
             sg.popup_error(f"Il percorso selezionato per la cartella soggetti ({subj_folder}) non è una cartella.")
         else:
             for cf in cf_list:
-                full_path = os.path.join(subj_folder, cf)
+                full_path = os.path.join(subj_folder, cf.upper())
                 if not os.path.isdir(full_path):  # Only if folder doesn't already exist
                     try:
                         os.mkdir(full_path)
@@ -141,6 +141,9 @@ def filter_persone_collegate(window: sg.Window):
     persone_collegate = window[Keys.EDITCOLLEGATE].get()
     columns1 = [Keys.COLNOME, Keys.COLCOGNOME]
     columns2 = columns1[::-1]
+    if len(persone_collegate.split()) == 0:
+        # Empty field, early return to prevent crashing
+        return
     query = [persone_collegate.split()[0], persone_collegate.split()[-1]]
 
     # No guarantee in how this is written, try assuming it's [name, surname] or viceversa
