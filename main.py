@@ -43,4 +43,7 @@ while True:  # Main update loop
     if event == Keys.EDITVAI:
         callbacks.filter_persone_collegate(window)
 
+    if event == Keys.MAINTABLE:
+        callbacks.load_input_forms(window)
+
 window.close()

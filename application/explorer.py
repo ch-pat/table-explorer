@@ -40,7 +40,7 @@ class InteractiveData:
             "Indirizzo", "CAP", "Comune", "Provincia",
             "Telefono 1", "Telefono 2",
             "E-mail 1", "E-mail 2",
-            "Persone collegate", "Rapporto",
+            "Persone Collegate", "Rapporto",
             "Servizio CAF", "Servizio Patronato",
             "Prodotto Finanziario",
             "Note",
@@ -78,6 +78,17 @@ class InteractiveData:
     def get_codice_fiscale_list(self):
         cf_heading = self.get_headings()[self.get_codice_fiscale_index()]
         return self.data[cf_heading].values.tolist()
+
+    def get_data_row(self, cf: str) -> dict:
+        """
+        :param cf: the Codice Fiscale of the desired row
+        :return dict: the dictionary containing the requested data
+        """
+        row = self.data[self.data['Codice Fiscale'].str.lower() == cf.lower()]
+        idx = row.index.values.astype(int)[0]
+        row = row.to_dict()
+        result = {k: v[idx] for k, v in row.items()}
+        return result
 
     def filter_view(self, columns: list, queries: list):
         """

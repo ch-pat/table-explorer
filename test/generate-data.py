@@ -18,7 +18,7 @@ headers = [
     "Telefono 2",
     "E-mail 1",
     "E-mail 2",
-    "Persone collegate",
+    "Persone Collegate",
     "Rapporto",
     "Servizio CAF",
     "Servizio Patronato",
@@ -28,7 +28,7 @@ headers = [
     "Data Tesseramento",
     "Tipo Tessera",
     "Numero Ricevuta",
-    "Contributo Volontario"
+    "Contributo Volontario",
     "Uscita"
     ]
 df = pandas.DataFrame()

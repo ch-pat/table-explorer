@@ -49,16 +49,11 @@ def first_run():
 
 
 def open_subject_folder(window: sg.Window):
-    # IMPORTANT indexes refer to the current view, NOT THE ACTUAL DATA
-    # shouldn't matter here because no change is made to the data, but keep in mind
-    tb: sg.Table = window[Keys.MAINTABLE]  # Grab table element from window
-    if not tb.SelectedRows:  # Only run if a row is actually selected
+    # TODO: now that data for the subject is loaded into forms, could grab Codice fiscale from the form
+    cf = window[Keys.EDITCODICEFISCALE].get()
+    if not cf:
         return
 
-    row_index = tb.SelectedRows[0]
-    row_content = tb.get()[row_index]
-
-    cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
     subj_folder = sg.user_settings()["subjects_folder"]
     full_path = os.path.join(subj_folder, cf.upper())
     if open_dir(full_path):
@@ -155,6 +150,19 @@ def filter_persone_collegate(window: sg.Window):
     else:
         filter_table(window, [], [])
 
+
+def load_input_forms(window: sg.Window):
+    tb: sg.Table = window[Keys.MAINTABLE]
+    if not tb.SelectedRows:  # Only run if a row is actually selected
+        return
+
+    row_index = tb.SelectedRows[0]
+    row_content = tb.get()[row_index]
+    cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
+    data = explorer.TABLE.get_data_row(cf)
+    load_data_to_forms(window, data)
+
+
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean
@@ -171,3 +179,15 @@ def open_dir(full_path_to_dir) -> bool:
         os.startfile(full_path_to_dir)
         return True
     return False
+
+
+def load_data_to_forms(window: sg.Window, data: dict):
+    """
+    Loads data of a row to the input forms of the ui window
+    :param window: the ui window object
+    :param data: dict containing all the data
+    :return:
+    """
+    for k in data.keys():
+        form_key = Keys.COLUMN_TO_FORM[k]
+        window[form_key].update(data[k])
