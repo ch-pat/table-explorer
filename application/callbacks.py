@@ -163,6 +163,49 @@ def load_input_forms(window: sg.Window):
     load_data_to_forms(window, data)
 
 
+def save_changes(window: sg.Window):
+    tb: sg.Table = window[Keys.MAINTABLE]
+    if not tb.SelectedRows:  # Only run if a row is actually selected
+        return
+
+    # Get current CF in case it gets changed
+    row_index = tb.SelectedRows[0]
+    row_content = tb.get()[row_index]
+    cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
+
+    # grab data from window
+    data = {}
+    for k in Keys.FORM_TO_COLUMN.keys():
+        data[Keys.FORM_TO_COLUMN[k]] = window[k].get()
+
+    # TODO: add domain checks here before passing data to update
+
+    explorer.TABLE.update_row(cf, data)
+    tb.update(explorer.TABLE.view)
+
+
+def delete_row(window: sg.Window):
+    tb: sg.Table = window[Keys.MAINTABLE]
+    if not tb.SelectedRows:  # Only run if a row is actually selected
+        return
+
+    text = "ATTENZIONE!!!\n\nSi sta cercando di cancellare la riga attualmente selezionata! Confermare solo se si" \
+           " vuole veramente cancellare la riga selezionata."
+
+    if not ui.yes_no_window(text):
+        return
+
+    # Get current CF in case it gets changed
+    row_index = tb.SelectedRows[0]
+    row_content = tb.get()[row_index]
+    cf = explorer.TABLE.extract_codice_fiscale_from_row(row_content)
+    explorer.TABLE.delete_row(cf)
+    tb.update(explorer.TABLE.view)
+
+
+def add_new_row(window: sg.Window):
+    pass
+
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean

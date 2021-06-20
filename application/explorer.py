@@ -16,6 +16,7 @@ class InteractiveData:
         self.view_headings: list = self.get_view_headings()
         self._data: pd.DataFrame = pd.read_excel(filepath)
         self._view: list = self._data[self.view_headings].values.tolist()
+        self.filepath: str = filepath
 
     @property
     def view(self) -> list:
@@ -107,6 +108,28 @@ class InteractiveData:
         for (column, query) in zip(columns, queries):
             results = results[results[column].str.contains(query, na=False, case=False)]
         return len(results) > 0
+
+    def update_row(self, cf: str, data: dict):
+        """
+        Updates row identified by cf with the data provided and saves to file
+        :param cf:
+        :param data:
+        :return:
+        """
+        new_row = [data[k] for k in self.get_headings()]
+        idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
+        self.data.at[idx, :] = new_row
+        self.save_data_to_file()
+        self.view = self.data
+
+    def delete_row(self, cf: str):
+        idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
+        self.data.drop(index=idx, inplace=True)
+        self.save_data_to_file()
+        self.view = self.data
+
+    def save_data_to_file(self):
+        self.data.to_excel(self.filepath, index=False)
 
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file

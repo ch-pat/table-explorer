@@ -21,6 +21,9 @@ class Strings:
                           "Ovvero il codice fiscale della persona a cui corrisponde la cartella.\n\n" \
                           "Cliccando 'Conferma' saranno create, all'interno della cartella Soggetti, cartelle " \
                           "codice fiscale per ogni soggetto presente nel database che non ne abbia già una."
+    SAVE_CHANGES = "Salva Modifiche"
+    DELETE_ROW = "Elimina Riga"
+    ADD_NEW = "Aggiungi nuovo soggetto"
 
 
 class Keys:
@@ -135,6 +138,10 @@ class Keys:
     FILLCONFIGTEXT = "-FILLCONFIGTEXT-"
     MAINTABLE = "-MAINTABLE-"
     OPENFOLDER = "-OPENFOLDER-"
+    SAVE = "-SAVE-"
+    DELETE = "-DELETE-"
+    ADD = "-ADD-"
+    FEEDBACK = "-FEEDBACK-"
 
     MENUCREATEFOLDERS = "Crea cartelle soggetti::MENUCREATEFOLDERS"
     MENUCHANGESUBJECTSFOLDER = "Cambia cartella soggetti::CHANGESUBJECTSFOLDER"

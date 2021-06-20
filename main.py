@@ -46,4 +46,13 @@ while True:  # Main update loop
     if event == Keys.MAINTABLE:
         callbacks.load_input_forms(window)
 
+    if event == Keys.SAVE:
+        callbacks.save_changes(window)
+
+    if event == Keys.DELETE:
+        callbacks.delete_row(window)
+
+    if event == Keys.ADD:
+        callbacks.add_new_row(window)
+
 window.close()

@@ -9,6 +9,7 @@ from application import explorer
 
 # ---- LAYOUTS ---- #
 
+
 def main_layout() -> list:
     w, h = width, height
     table_and_search = [
@@ -32,11 +33,16 @@ def main_layout() -> list:
                       num_rows=min(35, len(explorer.TABLE.view)),
                       enable_events=True,
                       key=Keys.MAINTABLE)]
-            ], size=(w*4/9, h*5/6), element_justification="left", expand_x=True, expand_y=True)]
+            ], size=(w*4/9, h*7/9), element_justification="left", expand_x=True, expand_y=True)],
+        [sg.Button(Strings.ADD_NEW, key=Keys.ADD)]
     ]
 
     fields_and_buttons = [
-        [sg.Text("Modifica riga selezionata", justification='center')],
+        [sg.Text("Modifica riga selezionata", justification='left'),
+         sg.Button(Strings.DELETE_ROW, button_color='red', key=Keys.DELETE),
+         sg.Button(Strings.SAVE_CHANGES, key=Keys.SAVE),
+         sg.Text("Sono presenti modifiche non salvate!", visible=False)
+         ],
         [sg.Column(edit_fields(), scrollable=True, vertical_scroll_only=True, expand_y=True)],
     ]
 
@@ -62,6 +68,7 @@ def labelled_input(label: str, key: str = None, size: tuple = (20, 1)) -> sg.Col
         [sg.Input(key=key, size=size)]
     ], scrollable=False, element_justification='left', justification='left')
     return col
+
 
 def edit_fields() -> list:
     """ Returns the layout containing all fields for table row editing """
@@ -116,11 +123,11 @@ def edit_fields() -> list:
 
         [sg.Column([
             [sg.Text("Note", justification="left")],
-            [sg.Multiline(size=(40, 4), key=Keys.EDITNOTE)]
+            [sg.Multiline(size=(40, 3), key=Keys.EDITNOTE)]
         ], scrollable=False, element_justification='left', justification='left'),
             sg.Column([
                 [sg.Text("Dettagli Aggiuntivi", justification="left")],
-                [sg.Multiline(size=(40, 4), key=Keys.EDITDETTAGLI)]
+                [sg.Multiline(size=(40, 3), key=Keys.EDITDETTAGLI)]
             ], scrollable=False, element_justification='left', justification='left')
         ]
     ]
@@ -272,6 +279,7 @@ def edit_excel_file_window():
     window.close()
     del window
 
+
 # Global ui utilities
 def get_screen_dimensions() -> (int, int):
     temp_window = sg.Window("tmp", [[]], alpha_channel=0, finalize=True)
@@ -279,5 +287,6 @@ def get_screen_dimensions() -> (int, int):
     temp_window.close()
     del temp_window
     return w, h
+
 
 width, height = get_screen_dimensions()

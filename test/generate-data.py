@@ -33,7 +33,7 @@ headers = [
     ]
 df = pandas.DataFrame()
 for h in headers:
-    col = [h + str(n) for n in range(10000)]
+    col = [h + str(n) for n in range(1000)]
     random.shuffle(col)
     df[h] = col
 
