@@ -49,7 +49,6 @@ def first_run():
 
 
 def open_subject_folder(window: sg.Window):
-    # TODO: now that data for the subject is loaded into forms, could grab Codice fiscale from the form
     cf = window[Keys.EDITCODICEFISCALE].get()
     if not cf:
         return
@@ -204,7 +203,11 @@ def delete_row(window: sg.Window):
 
 
 def add_new_row(window: sg.Window):
-    pass
+    data = ui.add_new_row_window()
+    explorer.TABLE.add_row(data)
+    tb: sg.Table = window[Keys.MAINTABLE]
+    tb.update(explorer.TABLE.view)
+
 
 # ---- HELPER FUNCTIONS ---- #
 """

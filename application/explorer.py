@@ -14,7 +14,7 @@ class InteractiveData:
     def __init__(self, filepath: str):
         self.headings: list = self.get_headings()
         self.view_headings: list = self.get_view_headings()
-        self._data: pd.DataFrame = pd.read_excel(filepath)
+        self._data: pd.DataFrame = pd.read_excel(filepath).fillna("")
         self._view: list = self._data[self.view_headings].values.tolist()
         self.filepath: str = filepath
 
@@ -32,7 +32,7 @@ class InteractiveData:
 
     @data.setter
     def data(self, new_data: pd.DataFrame):
-        self._view = new_data.values.tolist()
+        self._data = new_data.fillna("")
 
     def get_headings(self) -> list:
         # TODO maybe get from file rather than keeping hardcoded
@@ -119,12 +119,20 @@ class InteractiveData:
         new_row = [data[k] for k in self.get_headings()]
         idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
         self.data.at[idx, :] = new_row
+        self.data = self.data
         self.save_data_to_file()
         self.view = self.data
 
     def delete_row(self, cf: str):
         idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
         self.data.drop(index=idx, inplace=True)
+        self.save_data_to_file()
+        self.view = self.data
+
+    def add_row(self, data):
+        new_row = [data[k] for k in self.get_headings()]
+        new_row = pd.DataFrame([new_row], columns=self.get_headings())
+        self.data = self.data.append(new_row, ignore_index=True)
         self.save_data_to_file()
         self.view = self.data
 

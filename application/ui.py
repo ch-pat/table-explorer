@@ -30,7 +30,7 @@ def main_layout() -> list:
                       vertical_scroll_only=True,
                       justification="left",
                       alternating_row_color='light gray',
-                      num_rows=min(35, len(explorer.TABLE.view)),
+                      num_rows=35,
                       enable_events=True,
                       key=Keys.MAINTABLE)]
             ], size=(w*4/9, h*7/9), element_justification="left", expand_x=True, expand_y=True)],
@@ -278,6 +278,79 @@ def edit_excel_file_window():
 
     window.close()
     del window
+
+
+def add_new_row_window() -> dict:
+    """
+    Provides a window with forms to fill to add a new row to the database
+    :return: A dict containing {dataframe_column: content}
+    """
+    layout = [
+        [sg.Frame('Dati Anagrafici', [
+            [labelled_input('Nome', key=Keys.ADDNOME), labelled_input('Cognome', key=Keys.ADDCOGNOME),
+             labelled_input('Codice Fiscale', size=(18, 1), key=Keys.ADDCODICEFISCALE)],
+            [labelled_input('Indirizzo', size=(20, 1), key=Keys.ADDINDIRIZZO),
+             labelled_input('CAP', size=(7, 1), key=Keys.ADDCAP), labelled_input('Comune', key=Keys.ADDCOMUNE),
+             labelled_input('Provincia', size=(10, 1), key=Keys.ADDPROV)]
+        ])],
+
+        [sg.Frame('Contatti', [
+            [labelled_input('Telefono 1', key=Keys.ADDTELEFONO1), labelled_input('Telefono 2', key=Keys.ADDTELEFONO2),
+             labelled_input('E-mail 1', size=(20, 1), key=Keys.ADDMAIL1),
+             labelled_input('E-mail 2', size=(20, 1), key=Keys.ADDMAIL2)]
+        ])],
+
+        [sg.Frame('Persone Collegate', [
+            [labelled_input('Persone Collegate', key=Keys.ADDCOLLEGATE),
+             labelled_input('Rapporto', key=Keys.ADDRAPPORTO)]
+        ])],
+
+        [sg.Frame('Servizi & Prodotti', [
+            [labelled_input('Servizio CAF', key=Keys.ADDCAF),
+             labelled_input('Servizio Patronato', key=Keys.ADDPATRONATO),
+             labelled_input('Prodotto Finanziario', key=Keys.ADDFINANZIARIO)]
+        ])],
+
+        [sg.Frame('Dati Tesseramento', [
+            [labelled_input('Data Tesseramento', key=Keys.ADDDATATESSERA),
+             labelled_input('Tipo Tessera', key=Keys.ADDTIPOTESSERA),
+             labelled_input('Numero Ricevuta', key=Keys.ADDRICEVUTA)],
+            [labelled_input('Contributo Volontario', key=Keys.ADDCONTRIBUTO),
+             labelled_input('Uscita', key=Keys.ADDUSCITA)]
+        ])],
+
+        [sg.Column([
+            [sg.Text("Note", justification="left")],
+            [sg.Multiline(size=(40, 3), key=Keys.ADDNOTE)]
+        ], scrollable=False, element_justification='left', justification='left'),
+            sg.Column([
+                [sg.Text("Dettagli Aggiuntivi", justification="left")],
+                [sg.Multiline(size=(40, 3), key=Keys.ADDDETTAGLI)]
+            ], scrollable=False, element_justification='left', justification='left')
+        ],
+
+        [sg.Button("Conferma inserimento nuovo soggetto", key=Keys.ADDSAVE)]
+    ]
+
+    window = sg.Window('Aggiungi nuovo soggetto', layout, location=(0, 0))
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED:
+            window.close()
+            del window
+            break
+
+        if event == Keys.ADDSAVE:
+            form_contents = {}
+            for k in Keys.ADD_FORM_TO_COLUMN.keys():
+                form_contents[Keys.ADD_FORM_TO_COLUMN[k]] = window[k].get()
+            # TODO: check domain constraints here
+            window.close()
+            del window
+            return form_contents
+
 
 
 # Global ui utilities
