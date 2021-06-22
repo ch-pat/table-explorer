@@ -1,6 +1,5 @@
-import time
-
 import PySimpleGUI as sg
+from codicefiscale import codicefiscale
 from application import ui
 from application.strings import Strings, Keys
 from application import explorer
@@ -177,10 +176,19 @@ def save_changes(window: sg.Window):
     for k in Keys.FORM_TO_COLUMN.keys():
         data[Keys.FORM_TO_COLUMN[k]] = window[k].get()
 
-    # TODO: add domain checks here before passing data to update
-
-    explorer.TABLE.update_row(cf, data)
-    tb.update(explorer.TABLE.view)
+    new_cf = data[Keys.COLCF]
+    if codicefiscale.is_valid(new_cf):
+        if new_cf.lower() != cf.lower():  # If you are changing the cf, make sure new one is not duplicate
+            if not explorer.TABLE.codice_fiscale_already_exists(new_cf):
+                explorer.TABLE.update_row(cf, data)
+                tb.update(explorer.TABLE.view)
+            else:
+                sg.popup_error("Codice fiscale inserito già presente nel database!")
+        else:
+            explorer.TABLE.update_row(cf, data)
+            tb.update(explorer.TABLE.view)
+    else:
+        sg.popup_error("Codice fiscale inserito non valido!")
 
 
 def delete_row(window: sg.Window):
@@ -204,9 +212,10 @@ def delete_row(window: sg.Window):
 
 def add_new_row(window: sg.Window):
     data = ui.add_new_row_window()
-    explorer.TABLE.add_row(data)
-    tb: sg.Table = window[Keys.MAINTABLE]
-    tb.update(explorer.TABLE.view)
+    if data:
+        explorer.TABLE.add_row(data)
+        tb: sg.Table = window[Keys.MAINTABLE]
+        tb.update(explorer.TABLE.view)
 
 
 # ---- HELPER FUNCTIONS ---- #

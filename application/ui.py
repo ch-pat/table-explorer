@@ -3,6 +3,7 @@ Layouts for the GUI are defined in this module
 """
 import PySimpleGUI as sg
 import os
+from codicefiscale import codicefiscale
 from application.strings import Keys
 from application.strings import Strings
 from application import explorer
@@ -346,11 +347,17 @@ def add_new_row_window() -> dict:
             form_contents = {}
             for k in Keys.ADD_FORM_TO_COLUMN.keys():
                 form_contents[Keys.ADD_FORM_TO_COLUMN[k]] = window[k].get()
-            # TODO: check domain constraints here
-            window.close()
-            del window
-            return form_contents
 
+            new_cf = form_contents[Keys.COLCF]
+            if codicefiscale.is_valid(new_cf):
+                if not explorer.TABLE.codice_fiscale_already_exists(new_cf):
+                    window.close()
+                    del window
+                    return form_contents
+                else:
+                    sg.popup_error("Codice fiscale inserito già presente nel database!")
+            else:
+                sg.popup_error("Codice fiscale inserito non valido!")
 
 
 # Global ui utilities

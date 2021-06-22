@@ -139,6 +139,11 @@ class InteractiveData:
     def save_data_to_file(self):
         self.data.to_excel(self.filepath, index=False)
 
+    def codice_fiscale_already_exists(self, cf: str):
+        if cf in self.get_codice_fiscale_list():
+            return True
+        return False
+
 
 # Global TABLE variable to be accessed by all modules that need to read or write to the excel file
 TABLE: InteractiveData = None
