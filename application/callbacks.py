@@ -180,6 +180,7 @@ def save_changes(window: sg.Window):
     if codicefiscale.is_valid(new_cf):
         if new_cf.lower() != cf.lower():  # If you are changing the cf, make sure new one is not duplicate
             if not explorer.TABLE.codice_fiscale_already_exists(new_cf):
+                # TODO: change subject folder name here
                 explorer.TABLE.update_row(cf, data)
                 tb.update(explorer.TABLE.view)
             else:
