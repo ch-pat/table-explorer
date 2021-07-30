@@ -219,6 +219,13 @@ def add_new_row(window: sg.Window):
         tb.update(explorer.TABLE.view)
 
 
+def reload_data(window: sg.Window):
+    tb: sg.Table = window[Keys.MAINTABLE]
+    explorer.TABLE.reload_data()
+    tb.update(explorer.TABLE.view)
+
+
+
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean

@@ -116,24 +116,50 @@ class InteractiveData:
         :param data:
         :return:
         """
-        new_row = [data[k] for k in self.get_headings()]
-        idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
-        self.data.at[idx, :] = new_row
-        self.data = self.data
-        self.save_data_to_file()
-        self.view = self.data
+        # Reload file before applying changes in case someone else modified it
+        self.reload_data()
+        # Apply changes if needed
+        cf_column = self.data["Codice Fiscale"].str.lower()
+        if cf.lower() in cf_column.values.tolist():
+            new_row = [data[k] for k in self.get_headings()]
+            idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
+            self.data.at[idx, :] = new_row
+            self.data = self.data
+            # Save file and update view
+            self.save_data_to_file()
+            self.view = self.data
+        else:
+            sg.popup_ok("Il soggetto selezionato per la modifica non è stato trovato. È possibile che un altro utente"
+                        " abbia cancellato il soggetto o ne abbia modificato il codice fiscale.")
 
     def delete_row(self, cf: str):
-        idx = self.data[self.data["Codice Fiscale"].str.lower() == cf.lower()].index
-        self.data.drop(index=idx, inplace=True)
-        self.save_data_to_file()
-        self.view = self.data
+        # Reload file before applying changes in case someone else modified it
+        self.reload_data()
+        # Apply changes if needed
+        cf_column = self.data["Codice Fiscale"].str.lower()
+        if cf.lower() in cf_column.values.tolist():
+            idx = self.data[cf_column == cf.lower()].index
+            self.data.drop(index=idx, inplace=True)
+            # Save file and update view (again) only if changes have been made
+            # otherwise, view has already been updated in reload_data()
+            self.save_data_to_file()
+            self.view = self.data
 
     def add_row(self, data):
-        new_row = [data[k] for k in self.get_headings()]
-        new_row = pd.DataFrame([new_row], columns=self.get_headings())
-        self.data = self.data.append(new_row, ignore_index=True)
-        self.save_data_to_file()
+        # Reload file before applying changes in case someone else modified it
+        self.reload_data()
+        # Apply changes if needed
+        cf_column = self.data["Codice Fiscale"].str.lower()
+        if data["Codice Fiscale"].lower() not in cf_column.values.tolist():
+            new_row = [data[k] for k in self.get_headings()]
+            new_row = pd.DataFrame([new_row], columns=self.get_headings())
+            self.data = self.data.append(new_row, ignore_index=True)
+            # Save file and update view
+            self.save_data_to_file()
+            self.view = self.data
+
+    def reload_data(self):
+        self.data = pd.read_excel(self.filepath).fillna("")
         self.view = self.data
 
     def save_data_to_file(self):

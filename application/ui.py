@@ -15,7 +15,9 @@ def main_layout() -> list:
     w, h = width, height
     table_and_search = [
         [sg.Menu(menu_layout())],
-        [sg.Text("🔍"),
+        [
+            sg.Button(Strings.RELOAD, key=Keys.RELOAD),
+            sg.Text("🔍"),
             # Search input boxes
             sg.Text("Nome:"), sg.Input(key=Keys.SEARCHINPUTNOME, change_submits=True, size=(10, 1)),
             sg.Text("Cognome:"), sg.Input(key=Keys.SEARCHINPUTCOGNOME, change_submits=True, size=(10, 1)),

@@ -24,6 +24,7 @@ class Strings:
     SAVE_CHANGES = "Salva Modifiche"
     DELETE_ROW = "Elimina Riga"
     ADD_NEW = "Aggiungi nuovo soggetto"
+    RELOAD = "↻ Aggiorna"
 
 
 class Keys:
@@ -195,6 +196,7 @@ class Keys:
     DELETE = "-DELETE-"
     ADD = "-ADD-"
     FEEDBACK = "-FEEDBACK-"
+    RELOAD = "-RELOAD-"
 
     MENUCREATEFOLDERS = "Crea cartelle soggetti::MENUCREATEFOLDERS"
     MENUCHANGESUBJECTSFOLDER = "Cambia cartella soggetti::CHANGESUBJECTSFOLDER"

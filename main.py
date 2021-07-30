@@ -55,4 +55,7 @@ while True:  # Main update loop
     if event == Keys.ADD:
         callbacks.add_new_row(window)
 
+    if event == Keys.RELOAD:
+        callbacks.reload_data(window)
+
 window.close()
