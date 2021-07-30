@@ -1,5 +1,6 @@
 import pandas as pd
 import PySimpleGUI as sg
+import os
 
 
 class InteractiveData:
@@ -128,6 +129,8 @@ class InteractiveData:
             # Save file and update view
             self.save_data_to_file()
             self.view = self.data
+            if cf != data["Codice Fiscale"]:
+                update_subject_folder_name(cf, data["Codice Fiscale"])
         else:
             sg.popup_ok("Il soggetto selezionato per la modifica non è stato trovato. È possibile che un altro utente"
                         " abbia cancellato il soggetto o ne abbia modificato il codice fiscale.")
@@ -180,3 +183,16 @@ def define_table():
     excel_file = sg.user_settings()["excel_file"]
     global TABLE
     TABLE = InteractiveData(excel_file)
+
+
+def update_subject_folder_name(old_cf: str, new_cf: str):
+    subj_folder = sg.user_settings()["subjects_folder"]
+    full_path_old = os.path.join(subj_folder, old_cf.upper())
+    full_path_new = os.path.join(subj_folder, new_cf.upper())
+    try:
+        os.rename(full_path_old, full_path_new)
+    except PermissionError:
+        os.mkdir(full_path_new)
+        sg.popup_ok("Non è stato possibile aggiornare la cartella del soggetto! Un altro processo sta "
+                    "utilizzando un file presente nella cartella.\nÈ stata creata la nuova cartella ma "
+                    "occorre spostare manualmente i file del soggetto modificato.")

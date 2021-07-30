@@ -25,6 +25,7 @@ class Strings:
     DELETE_ROW = "Elimina Riga"
     ADD_NEW = "Aggiungi nuovo soggetto"
     RELOAD = "↻ Aggiorna"
+    SELECT_ROW = "Seleziona una riga della tabella prima di apportare modifiche!"
 
 
 class Keys:

@@ -164,6 +164,7 @@ def load_input_forms(window: sg.Window):
 def save_changes(window: sg.Window):
     tb: sg.Table = window[Keys.MAINTABLE]
     if not tb.SelectedRows:  # Only run if a row is actually selected
+        sg.popup_ok("Se")
         return
 
     # Get current CF in case it gets changed
