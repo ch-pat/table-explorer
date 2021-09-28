@@ -9,7 +9,7 @@ class Strings:
     CONFIG_NOT_EXISTS = "Il file o la cartella selezionati non esistono.\nRieffettuare la selezione."
     CONFIG_ERROR = "Rilevato un errore nella configurazione esistente.\nPuò essere dovuto allo spostamento del file" \
                    " usato come database o della cartella soggetti.\nRitorno alla configurazione iniziale."
-    OPEN_FOLDER = "Apri cartella soggetto"
+    OPEN_FOLDER = "📁 Apri cartella soggetto"
     YES = "Si"
     NO = "No"
     CANCEL = "Annulla"
@@ -23,9 +23,11 @@ class Strings:
                           "codice fiscale per ogni soggetto presente nel database che non ne abbia già una."
     SAVE_CHANGES = "Salva Modifiche"
     DELETE_ROW = "Elimina Riga"
-    ADD_NEW = "Aggiungi nuovo soggetto"
+    ADD_NEW = "➕ Aggiungi nuovo soggetto"
     RELOAD = "↻ Aggiorna"
     SELECT_ROW = "Seleziona una riga della tabella prima di apportare modifiche!"
+    SERVICES = "💼 Servizi"
+    RELATED = "👥 Persone Collegate"
 
 
 class Keys:
@@ -193,6 +195,8 @@ class Keys:
     FILLCONFIGTEXT = "-FILLCONFIGTEXT-"
     MAINTABLE = "-MAINTABLE-"
     OPENFOLDER = "-OPENFOLDER-"
+    OPENSERVICES = "-OPENSERVICES-"
+    OPENRELATED = "-OPENRELATED-"
     SAVE = "-SAVE-"
     DELETE = "-DELETE-"
     ADD = "-ADD-"

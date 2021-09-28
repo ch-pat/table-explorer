@@ -58,4 +58,10 @@ while True:  # Main update loop
     if event == Keys.RELOAD:
         callbacks.reload_data(window)
 
+    if event == Keys.OPENRELATED:
+        pass
+
+    if event == Keys.OPENSERVICES:
+        pass
+
 window.close()

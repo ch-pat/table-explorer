@@ -164,7 +164,7 @@ def load_input_forms(window: sg.Window):
 def save_changes(window: sg.Window):
     tb: sg.Table = window[Keys.MAINTABLE]
     if not tb.SelectedRows:  # Only run if a row is actually selected
-        sg.popup_ok("Se")
+        sg.popup_ok("Selezionare una riga da modificare dalla tabella")
         return
 
     # Get current CF in case it gets changed
@@ -175,7 +175,10 @@ def save_changes(window: sg.Window):
     # grab data from window
     data = {}
     for k in Keys.FORM_TO_COLUMN.keys():
-        data[Keys.FORM_TO_COLUMN[k]] = window[k].get()
+        if k in window.key_dict:
+            data[Keys.FORM_TO_COLUMN[k]] = window[k].get()
+        else:
+            data[Keys.FORM_TO_COLUMN[k]] = None
 
     new_cf = data[Keys.COLCF]
     if codicefiscale.is_valid(new_cf):
@@ -226,7 +229,6 @@ def reload_data(window: sg.Window):
     tb.update(explorer.TABLE.view)
 
 
-
 # ---- HELPER FUNCTIONS ---- #
 """
 These functions are meant to be called from the above functions only and are meant to help keep the logic clean
@@ -254,4 +256,5 @@ def load_data_to_forms(window: sg.Window, data: dict):
     """
     for k in data.keys():
         form_key = Keys.COLUMN_TO_FORM[k]
-        window[form_key].update(data[k])
+        if form_key in window.key_dict:
+            window[form_key].update(data[k])

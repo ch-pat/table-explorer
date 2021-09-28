@@ -88,8 +88,6 @@ def edit_fields() -> list:
     # "Tipo Tessera",
     # "Numero Ricevuta",
     # "Contributo Volontario",
-    # "Uscita"
-
     layout = [
         [sg.Frame('Dati Anagrafici', [
             [labelled_input('Nome', key=Keys.EDITNOME), labelled_input('Cognome', key=Keys.EDITCOGNOME),
@@ -97,23 +95,17 @@ def edit_fields() -> list:
             [labelled_input('Indirizzo', size=(20, 1), key=Keys.EDITINDIRIZZO),
              labelled_input('CAP', size=(7, 1), key=Keys.EDITCAP), labelled_input('Comune', key=Keys.EDITCOMUNE),
              labelled_input('Provincia', size=(10, 1), key=Keys.EDITPROV)]
-        ]), sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)],
+        ]),
+         sg.Column([
+             [sg.Button(Strings.OPEN_FOLDER, key=Keys.OPENFOLDER)],
+             [sg.Button(Strings.RELATED, key=Keys.OPENRELATED)],
+             [sg.Button(Strings.SERVICES, key=Keys.OPENSERVICES)]
+         ])],
 
         [sg.Frame('Contatti', [
             [labelled_input('Telefono 1', key=Keys.EDITTELEFONO1), labelled_input('Telefono 2', key=Keys.EDITTELEFONO2),
              labelled_input('E-mail 1', size=(20, 1), key=Keys.EDITMAIL1),
              labelled_input('E-mail 2', size=(20, 1), key=Keys.EDITMAIL2)]
-        ])],
-
-        [sg.Frame('Persone Collegate', [
-            [labelled_input('Persone Collegate', key=Keys.EDITCOLLEGATE),
-             labelled_input('Rapporto', key=Keys.EDITRAPPORTO), sg.Button("Vai a soggetto", key=Keys.EDITVAI)]
-        ])],
-
-        [sg.Frame('Servizi & Prodotti', [
-            [labelled_input('Servizio CAF', key=Keys.EDITCAF),
-             labelled_input('Servizio Patronato', key=Keys.EDITPATRONATO),
-             labelled_input('Prodotto Finanziario', key=Keys.EDITFINANZIARIO)]
         ])],
 
         [sg.Frame('Dati Tesseramento', [
@@ -126,14 +118,16 @@ def edit_fields() -> list:
 
         [sg.Column([
             [sg.Text("Note", justification="left")],
-            [sg.Multiline(size=(40, 3), key=Keys.EDITNOTE)]
+            [sg.Multiline(size=(40, 5), key=Keys.EDITNOTE)]
         ], scrollable=False, element_justification='left', justification='left'),
             sg.Column([
                 [sg.Text("Dettagli Aggiuntivi", justification="left")],
-                [sg.Multiline(size=(40, 3), key=Keys.EDITDETTAGLI)]
+                [sg.Multiline(size=(40, 5), key=Keys.EDITDETTAGLI)]
             ], scrollable=False, element_justification='left', justification='left')
         ]
     ]
+    # "Uscita"
+
     return layout
 
 
@@ -303,17 +297,6 @@ def add_new_row_window() -> dict:
              labelled_input('E-mail 2', size=(20, 1), key=Keys.ADDMAIL2)]
         ])],
 
-        [sg.Frame('Persone Collegate', [
-            [labelled_input('Persone Collegate', key=Keys.ADDCOLLEGATE),
-             labelled_input('Rapporto', key=Keys.ADDRAPPORTO)]
-        ])],
-
-        [sg.Frame('Servizi & Prodotti', [
-            [labelled_input('Servizio CAF', key=Keys.ADDCAF),
-             labelled_input('Servizio Patronato', key=Keys.ADDPATRONATO),
-             labelled_input('Prodotto Finanziario', key=Keys.ADDFINANZIARIO)]
-        ])],
-
         [sg.Frame('Dati Tesseramento', [
             [labelled_input('Data Tesseramento', key=Keys.ADDDATATESSERA),
              labelled_input('Tipo Tessera', key=Keys.ADDTIPOTESSERA),
@@ -348,7 +331,10 @@ def add_new_row_window() -> dict:
         if event == Keys.ADDSAVE:
             form_contents = {}
             for k in Keys.ADD_FORM_TO_COLUMN.keys():
-                form_contents[Keys.ADD_FORM_TO_COLUMN[k]] = window[k].get()
+                if k in window.key_dict:
+                    form_contents[Keys.ADD_FORM_TO_COLUMN[k]] = window[k].get()
+                else:
+                    form_contents[Keys.ADD_FORM_TO_COLUMN[k]] = None
 
             new_cf = form_contents[Keys.COLCF]
             if codicefiscale.is_valid(new_cf):

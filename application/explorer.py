@@ -15,7 +15,7 @@ class InteractiveData:
     def __init__(self, filepath: str):
         self.headings: list = self.get_headings()
         self.view_headings: list = self.get_view_headings()
-        self._data: pd.DataFrame = pd.read_excel(filepath).fillna("")
+        self._data: pd.DataFrame = pd.read_excel(filepath, dtype=str).fillna("")
         self._view: list = self._data[self.view_headings].values.tolist()
         self.filepath: str = filepath
 
@@ -154,7 +154,7 @@ class InteractiveData:
         # Apply changes if needed
         cf_column = self.data["Codice Fiscale"].str.lower()
         if data["Codice Fiscale"].lower() not in cf_column.values.tolist():
-            new_row = [data[k] for k in self.get_headings()]
+            new_row = [str(data[k]) for k in self.get_headings()]
             new_row = pd.DataFrame([new_row], columns=self.get_headings())
             self.data = self.data.append(new_row, ignore_index=True)
             # Save file and update view
@@ -166,7 +166,7 @@ class InteractiveData:
         self.view = self.data
 
     def save_data_to_file(self):
-        self.data.to_excel(self.filepath, index=False)
+        self.data.to_excel(self.filepath, index=False, float_format="%.0f")
 
     def codice_fiscale_already_exists(self, cf: str):
         if cf in self.get_codice_fiscale_list():
