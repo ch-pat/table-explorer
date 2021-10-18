@@ -162,7 +162,7 @@ class InteractiveData:
             self.view = self.data
 
     def reload_data(self):
-        self.data = pd.read_excel(self.filepath).fillna("")
+        self.data = pd.read_excel(self.filepath, dtype=str).fillna("")
         self.view = self.data
 
     def save_data_to_file(self):
